@@ -1,62 +1,238 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<p>Essa API foic criada usando o <a href="https://laravel.com/docs/8.x/sanctum" target="_blank">Sanctum</a> que fornece um sistema de autenticação leve para API´s, SPA´s baseadas em tokens.<br></p>
 
-## About Laravel
+## Usuário
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Register(Post): "api/register"
+<p align="left">Nessa rota deve ser passsado as informações para poder criar seu usuário</p>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```js
+{
+"name":"Math",
+"email":"math@gmail.com",
+"password":"1233",
+"password_confirmation":"1233"
+}
 
-## Learning Laravel
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+<p>Retorno</p>
+<b>O Token vai ser necessário para acessar as rotas protegidas</b>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```js
+{
+  "user": {
+    "name": "Math",
+    "email": "math@gmail.com",
+    "updated_at": "2021-03-31T22:01:54.000000Z",
+    "created_at": "2021-03-31T22:01:54.000000Z",
+    "id": 1
+  },
+  "token": "1|yEC4J49HP31Vtsa17AuznfuUvLD3Jr3QIMSYZ3cD"
+}
 
-## Laravel Sponsors
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- Login(Post): "api/login"
+<p align="left">Nessa rota deve ser passsado as informações corretas do usuário cadastrado</p>
 
-### Premium Partners
+```js
+{
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+"email":"math@gmail.com",
+"password":"1233"
 
-## Contributing
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+<p>Retorno</p>
+<b>O Token vai ser necessário para acessar as rotas protegidas</b>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```js
+{
+  "user": {
+    "id": 1,
+    "name": "Math",
+    "email": "math@gmail.com",
+    "email_verified_at": null,
+    "created_at": "2021-03-31T22:01:54.000000Z",
+    "updated_at": "2021-03-31T22:01:54.000000Z"
+  },
+  "token": "3|hO6ly4F2pNfmVJHmsuxOQ9Rxj0mCX0WY7Dy1t9Gk"
+}
 
-## Security Vulnerabilities
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+- Loggout(Post): "api/logout"
+<p align="left">Essa rota irá destruir o token criado, impossibilitando qualquer acesso as rotas privadas</p>
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<p>Retorno</p>
+
+
+```js
+{
+  "message": "Logged out"
+}
+
+```
+
+
+## Products
+
+### Rotas públicas
+
+- Show['GET']: api/products/:id
+- Search['GET']: api/search/{name}
+- Products['GET']: api/products
+
+### Rotas Privadas
+- Store['POST']: api/products
+- Update['PUT']: api/products/{id}
+- Delete['DELETE']: api/products/{id}
+
+<hr>
+
+- Store['POST']: api/products
+<p align="left">Essa rota vai cadastar os produtos segundo suas informações</p>
+<p align="left"> Deve ser adicionado uma autorização do tipo Bearer nesta rota</p>
+
+```js
+{
+"name": "Iphone 3",
+"description":"this is a product 7",
+"price":"200.99",
+"slug": "peoduct-7"
+}
+```
+<p>Retorno</p>
+
+
+```js
+{
+  "name": "Iphone45",
+  "description": "this is a product 7",
+  "price": "200.99",
+  "slug": "peoduct-7",
+  "updated_at": "2021-03-31T23:01:32.000000Z",
+  "created_at": "2021-03-31T23:01:32.000000Z",
+  "id": 6
+}
+
+```
+
+
+
+- Update['PUT']: api/products/:id
+<p align="left">Essa rota vai atualizar os produtos segundo suas informações</p>
+<p align="left"> Deve ser adicionado uma autorização do tipo Bearer nesta rota</p>
+
+```js
+{
+"name": "Product two",
+"description":"this is a product 2",
+"price":"199.99",
+"slug": "product-two"
+}
+```
+<p>Retorno</p>
+
+
+```js
+{
+  "id": 2,
+  "name": "Product two",
+  "description": "this is a product 2",
+  "price": "199.99",
+  "slug": "product-two",
+  "created_at": "2021-03-31T21:08:53.000000Z",
+  "updated_at": "2021-03-31T21:17:00.000000Z"
+}
+
+```
+
+
+- Delete['DELETE']: api/products/:id
+<p align="left">Essa rota vai deletar determinado produto</p>
+<p align="left"> Deve ser adicionado uma autorização do tipo Bearer nesta rota</p>
+
+
+- Index['GET']: api/products
+<p align="left">Essa rota vai retornar todos os produtos cadastrados</p>
+<p align="left">Retorno</p>
+
+```js
+[
+  {
+    "id": 1,
+    "name": "Product One",
+    "description": "this is a product",
+    "price": "99.99",
+    "slug": "product-one",
+    "created_at": "2021-03-31T20:47:06.000000Z",
+    "updated_at": "2021-03-31T20:47:06.000000Z"
+  },
+  {
+    "id": 4,
+    "name": "Iphone",
+    "description": "this is a product 3",
+    "price": "499.99",
+    "slug": "peoduct-two",
+    "created_at": "2021-03-31T21:22:07.000000Z",
+    "updated_at": "2021-03-31T21:22:07.000000Z"
+  },
+  {
+    "id": 5,
+    "name": "Iphone 13",
+    "description": "this is a product43",
+    "price": "609.99",
+    "slug": "peoduct-two",
+    "created_at": "2021-03-31T22:02:32.000000Z",
+    "updated_at": "2021-03-31T22:02:32.000000Z"
+  }
+]
+```
+
+
+- Show['GET']: api/products/:id
+<p align="left">Essa rota vai retornar determinado produto</p>
+<p align="left">Retorno</p>
+
+```js
+{
+  "id": 2,
+  "name": "Product two",
+  "description": "this is a product 2",
+  "price": "499.99",
+  "slug": "peoduct-two",
+  "created_at": "2021-03-31T21:08:53.000000Z",
+  "updated_at": "2021-03-31T21:08:53.000000Z"
+}
+```
+
+- Search['GET']: api/products/search/:name
+<p align="left">Essa rota vai retornar todas as informações de um produto segundo seu nome</p>
+<p align="left">Retorno</p>
+
+<p>Exemplo: http://127.0.0.1:8000/api/products/search/45</p>
+
+<p>Retorno</p>
+
+```js
+[
+  {
+    "id": 6,
+    "name": "Iphone45",
+    "description": "this is a product 7",
+    "price": "200.99",
+    "slug": "peoduct-7",
+    "created_at": "2021-03-31T23:01:32.000000Z",
+    "updated_at": "2021-03-31T23:01:32.000000Z"
+  }
+]
+```
+
+
